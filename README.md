@@ -24,7 +24,7 @@ ttskit.tts('这是个示例', audio='1')
 ```
 
 ### 版本
-v0.1.2
+v0.1.3
 
 ### sdk_api
 语音合成SDK接口。
@@ -100,6 +100,34 @@ web_api.app.run(host='0.0.0.0', port=2718, debug=False)
 ```
 
 + 使用说明
+
+### http_server
+语音合成简易界面。
+构建简单的语音合成网页服务。
+
++ 简单使用
+```python
+from ttskit import http_server
+
+http_server.start_sever()
+# 打开网页：http://localhost:9000/ttskit
+```
+
++ 命令行
+```
+tkhttp
+
+usage: tkhttp [-h] [--device DEVICE] [--host HOST] [--port PORT]
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --device DEVICE  设置预测时使用的显卡,使用CPU设置成-1即可
+  --host HOST      IP地址
+  --port PORT      端口号
+```
+
++ 网页界面
+![index](ttskit/templates/index.png "index")
 
 ### resource
 模型数据等资源。

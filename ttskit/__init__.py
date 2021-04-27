@@ -32,13 +32,14 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import sdk_api
 import cli_api
 import web_api
+import http_server
 import encoder
 import mellotron
 import waveglow
 import resource
 from sdk_api import tts_sdk as tts
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 version_doc = """
 ### 版本
@@ -53,6 +54,6 @@ history_doc = """
 """
 
 readme_docs = [__doc__, version_doc,
-               sdk_api.__doc__, cli_api.__doc__, web_api.__doc__,
+               sdk_api.__doc__, cli_api.__doc__, web_api.__doc__, http_server.__doc__,
                resource.__doc__, encoder.__doc__, mellotron.__doc__, waveglow.__doc__,
                history_doc]

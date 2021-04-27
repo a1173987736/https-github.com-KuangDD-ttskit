@@ -27,8 +27,16 @@ def test_web_api():
     # 例如GET方法请求：http://localhost:2718/tts?text=这是个例子&audio=2
 
 
+def test_http_server():
+    from ttskit import http_server
+
+    http_server.start_sever()
+    # 打开网页：http://localhost:5555/ttskit
+
+
 if __name__ == "__main__":
     print(__file__)
-    test_sdk_api()
-    test_cli_api()
-    test_web_api()
+    # test_sdk_api()
+    # test_cli_api()
+    # test_web_api()
+    test_http_server()

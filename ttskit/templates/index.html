@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ttskit</title>
+</head>
+<body>
+<header>
+    <h1 align="center">TTSKIT</h1>
+</header>
+<div align="center" style="margin-top:10px">
+    <div style="font-size:24px">文本</div>
+    <form method="POST" name="form1">
+        <textarea type="text" name="content" id="text" rows="10"
+                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll">请输入需要合成的文本</textarea>
+        <div style="padding:20px;"></div>
+        <div style="font-size:24px">参数</div>
+        <textarea type="text" name="title" id="kwargs" rows="10"
+                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll">audio=24</textarea>
+        <div style="padding:20px;"></div>
+        <div>
+            <input type="submit" value="合成" id="button" style="font-size:24px"/>
+        </div>
+        <div style="padding:20px;"></div>
+        <div style="font-size:24px">语音</div>
+        <p id="message"></p>
+        <audio id="audio" controls autoplay hidden></audio>
+        <script>
+function q(selector) {return document.querySelector(selector)}
+q('#text').focus()
+q('#kwargs').focus()
+q('#button').addEventListener('click', function(e) {
+  text = q('#text').value.trim()
+  kwargs = q('#kwargs').value.trim()
+  if (text) {
+    q('#message').textContent = '正在合成 ...'
+    q('#button').disabled = true
+    q('#audio').hidden = true
+    synthesize(text, kwargs)
+  }
+  e.preventDefault()
+  return false
+})
+function synthesize(text, kwargs) {
+  fetch('/synthesize?text=' + encodeURIComponent(text) + '&kwargs=' + encodeURIComponent(kwargs), {cache: 'no-cache'})
+    .then(function(res) {
+      if (!res.ok) throw Error(res.statusText)
+      return res.blob()
+    }).then(function(blob) {
+      q('#message').textContent = text
+      q('#button').disabled = false
+      q('#audio').src = URL.createObjectURL(blob)
+      q('#audio').hidden = false
+    }).catch(function(err) {
+      q('#message').textContent = 'Error: ' + err.message
+      q('#button').disabled = false
+    })
+}
+        </script>
+    </form>
+</div>
+
+</body>
+</html>

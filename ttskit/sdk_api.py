@@ -193,7 +193,7 @@ def tts_sdk(text, speaker='biaobei', audio='0', **kwargs):
         tmp_audio = tempfile.TemporaryFile(suffix='.wav')
         tmp_audio.write(audio)
         audio = tmp_audio.name
-    elif isinstance(audio, str) and len(audio) >= 100:
+    elif isinstance(audio, str) and len(audio) >= 256:
         tmp_audio = tempfile.TemporaryFile(suffix='.wav')
         tmp_audio.write(base64.standard_b64decode(audio))
         audio = tmp_audio.name

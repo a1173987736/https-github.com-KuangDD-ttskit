@@ -32,7 +32,7 @@ logger = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 install_requires = ['aukit>=1.4.4', 'inflect', 'cycler', 'librosa', 'matplotlib<=3.1.1', 'numba==0.48', 'numpy',
                     'phkit>=0.2.7', 'pydub', 'PyYAML', 'scikit_learn', 'scipy', 'setproctitle', 'SIP', 'sounddevice',
                     'tensorboardX', 'torch>=1.6.0,<=1.7.1', 'tqdm', 'umap_learn', 'Unidecode', 'visdom',
-                    'webrtcvad_wheels', 'xmltodict', 'flask']
+                    'webrtcvad_wheels', 'xmltodict', 'flask', 'gevent']
 requires = [re.sub(r'[<>=].+', '', w) for w in install_requires]
 
 
@@ -79,9 +79,10 @@ setup(
     requires=requires,
     python_requires='>=3.6',  # python的依赖关系
     package_data={
-        'info': ['README.md', 'requirements.txt'],
+        'ttskit': ['requirements.txt', 'README.md'],
+        'ttskit.templates': ['index.html', 'index.png'],
     },  # 包数据，通常是与软件包实现密切相关的数据
-    include_package_data=True,
+    # include_package_data=True,
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
@@ -94,6 +95,7 @@ setup(
     entry_points={
         'console_scripts': [
             'tkcli = ttskit.cli_api:tts_cli',
+            'tkhttp = ttskit.http_server:start_sever',
         ]
     }
 )
