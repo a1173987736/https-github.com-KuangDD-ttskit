@@ -11,20 +11,27 @@ pip install -U ttskit
 ```
 
 - 注意
-    * 可能需另外安装的依赖包：torch, pyaudio, sounddevice。
-    * pyaudio暂不支持python37以上版本直接pip安装，需要下载whl文件安装，下载路径：https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
-    * sounddevice依赖pyaudio。
+    * 可能需另外安装的依赖包：torch，版本要求torch>=1.6.0,<=1.7.1，根据自己的实际环境安装合适cuda或cpu版本的torch。
     * ttskit的默认音频采样率为22.5k。
+    * 自行设置环境变量CUDA_VISIBLE_DEVICES以调用GPU，如果不设置，则默认调用0号GPU，没有GPU则使用CPU。
 
 ### 快速使用
 ```
 import ttskit
 
-ttskit.tts('这是个示例', audio='1')
+ttskit.tts('这是个示例', audio='24')
+
+# 参数介绍
+'''语音合成函数式SDK接口，函数参数全部为字符串格式。
+text为待合成的文本。
+speaker为发音人名称，可选名称为_reference_audio_dict；默认的发音人名称列表见resource/reference_audio/__init__.py。
+audio为发音人参考音频，如果是数字，则调用内置的语音作为发音人参考音频；如果是语音路径，则调用audio路径的语音作为发音人参考音频。
+output为输出，如果以.wav结尾，则为保存语音文件的路径；如果以play开头，则合成语音后自动播放语音。
+'''
 ```
 
 ### 版本
-v0.1.3
+v0.1.4
 
 ### sdk_api
 语音合成SDK接口。

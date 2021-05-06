@@ -51,6 +51,7 @@ def set_args():
 
 
 def start_sever():
+    """部署网页服务。"""
     args = set_args()
     os.environ["CUDA_VISIBLE_DEVICE"] = args.device
     app = Flask(__name__)

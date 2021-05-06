@@ -71,6 +71,7 @@ _reference_audio_dict = {os.path.basename(w).split('-')[1]: w for w in _referenc
 
 
 def download_resource():
+    """下载语音合成工具箱必备资源。"""
     global _audio_tar_path, _reference_audio_tar_path
     global _ge2e_path, _mellotron_path, _mellotron_hparams_path, _waveglow_path
     for fpath in [_audio_tar_path, _reference_audio_tar_path]:
@@ -83,6 +84,7 @@ def download_resource():
 
 
 def download_data(fpath):
+    """下载数据。"""
     url_prefix = 'http://www.kddbot.com:11000/data/'
     url_info_prefix = 'http://www.kddbot.com:11000/data_info/'
 
@@ -91,7 +93,14 @@ def download_data(fpath):
     url = f'{url_prefix}{fname_key}'
 
     url_info = f'{url_info_prefix}{fname_key}'
-    res = requests.get(url_info)
+    try:
+        res = requests.get(url_info)
+    except Exception as e:
+        logger.info(f'Error {Exception}')
+        logger.info(f'Download <{fname}> failed!!!')
+        logger.info(f'Download url: {url}')
+        logger.info(f'Download failed! Please check!')
+        return
     if res.status_code == 200:
         fsize = res.json()['file_size']
     else:
@@ -125,7 +134,7 @@ def download_data(fpath):
 
 
 def ex_tar(inpath):
-    """"""
+    """解压数据。"""
     import tarfile
     outdir = os.path.dirname(inpath)
     with tarfile.open(inpath, 'r') as fz:
@@ -139,6 +148,7 @@ def load_models(mellotron_path=_mellotron_path,
                 ge2e_path=_ge2e_path,
                 mellotron_hparams_path=_mellotron_hparams_path,
                 **kwargs):
+    """加载模型，如果使用默认参数，则判断文件是否已经下载，如果未下载，则先下载文件。"""
     global _use_waveglow
     global _dataloader
 
@@ -167,6 +177,7 @@ def load_models(mellotron_path=_mellotron_path,
 
 
 def transform_mellotron_input_data(dataloader, text, speaker='', audio='', device=''):
+    """输入数据转换为模型输入的数据格式。"""
     if not device:
         device = _device
 
@@ -180,7 +191,13 @@ def transform_mellotron_input_data(dataloader, text, speaker='', audio='', devic
     return text_data, style_data, speaker_data, f0_data, mel_data
 
 
-def tts_sdk(text, speaker='biaobei', audio='0', **kwargs):
+def tts_sdk(text, speaker='biaobei', audio='0', output='', **kwargs):
+    """语音合成函数式SDK接口。
+    text为待合成的文本。
+    speaker可设置为内置的发音人名称，可选名称见_reference_audio_dict；默认的发音人名称列表见resource/reference_audio/__init__.py。
+    audio如果是数字，则调用内置的语音作为发音人参考音频；如果是语音路径，则调用audio路径的语音作为发音人参考音频。
+    output如果以.wav结尾，则为保存语音文件的路径；如果以play开头，则合成语音后自动播放语音。
+    """
     global _dataloader
     if _dataloader is None:
         load_models(**kwargs)
@@ -207,7 +224,7 @@ def tts_sdk(text, speaker='biaobei', audio='0', **kwargs):
     mels, mels_postnet, gates, alignments = mellotron.generate_mel(text_data, style_data, speaker_data, f0_data)
 
     out_gate = gates.cpu().numpy()[0]
-    end_idx = np.argmax(out_gate > 0.2) or np.argmax(out_gate) or out_gate.shape[0]
+    end_idx = np.argmax(out_gate > kwargs.get('gate_threshold', 0.2)) or np.argmax(out_gate) or out_gate.shape[0]
 
     mels_postnet = mels_postnet[:, :, :end_idx]
     if _use_waveglow:
@@ -217,7 +234,6 @@ def tts_sdk(text, speaker='biaobei', audio='0', **kwargs):
 
     wav_output = wavs.squeeze(0).cpu().numpy()
 
-    output = kwargs.get('output', '')
     if output.startswith('play'):
         aukit.play_sound(wav_output, sr=_stft.sampling_rate)
     if output.endswith('.wav'):

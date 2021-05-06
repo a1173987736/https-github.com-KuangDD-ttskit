@@ -31,7 +31,7 @@ def test_http_server():
     from ttskit import http_server
 
     http_server.start_sever()
-    # 打开网页：http://localhost:5555/ttskit
+    # 打开网页：http://localhost:9000/ttskit
 
 
 if __name__ == "__main__":

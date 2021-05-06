@@ -82,6 +82,7 @@ _example_audio_list = [f'{num}' for num, audio in enumerate(sdk_api._reference_a
 
 
 def parse_args():
+    """命令行参数设置。"""
     parser = argparse.ArgumentParser(description='语音合成命令行。')
     parser.add_argument('-i', '--interaction', type=int, default=1,
                         help='是否交互，如果1则交互，如果0则不交互。交互模式下：如果不输入文本或发音人，则为随机。如果输入文本为exit，则退出。')
@@ -109,6 +110,7 @@ def parse_args():
 
 
 def tts_cli(args=None):
+    """命令行执行接口。"""
     if args is None:
         args = parse_args()
 

@@ -42,6 +42,7 @@ def parse_request(req_data):
 
 @app.route('/tts', methods=['POST', 'GET'])
 def tts_web():
+    """部署WEB的API接口。"""
     data = parse_request(request)
     text = data.get('text', '这是个样例')
     speaker = data.get('speaker', 'biaobei')
