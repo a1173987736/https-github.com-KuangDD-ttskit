@@ -29,7 +29,7 @@ import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
-install_requires = ['aukit>=1.4.4', 'inflect', 'cycler', 'librosa', 'matplotlib<=3.1.1', 'numba==0.48', 'numpy',
+install_requires = ['aukit>=1.4.4', 'inflect', 'cycler', 'librosa', 'matplotlib>=3.1.1,<=3.4.2', 'numba==0.48', 'numpy',
                     'phkit>=0.2.7', 'pydub', 'PyYAML', 'scikit_learn', 'scipy', 'setproctitle', 'SIP', 'sounddevice',
                     'tensorboardX', 'torch>=1.6.0,<=1.7.1', 'tqdm', 'umap_learn', 'Unidecode', 'visdom',
                     'webrtcvad_wheels', 'xmltodict', 'flask', 'gevent']
@@ -47,18 +47,9 @@ def create_readme():
 
 
 def pip_install():
-    for pkg in install_requires:
-        try:
-            os.system("pip install {}".format(pkg))
-        except Exception as e:
-            logger.info("pip install {} failed".format(pkg))
-            try:
-                os.system("pip install {} --user".format(pkg))
-            except Exception as e:
-                logger.info("pip install {} --user failed".format(pkg))
-    # os.system(
-    #     r'pip install torch==1.7.0+cpu torchvision==0.8.0 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html')
-    # logger.info(f'pip install torch==1.7.0+cpu done.')
+    from ttskit import makefile
+
+    makefile.pip_install_requirements(os.path.join('ttskit', 'requirements.txt'))
 
 
 pip_install()

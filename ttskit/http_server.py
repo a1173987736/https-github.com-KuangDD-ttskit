@@ -33,6 +33,12 @@ optional arguments:
 + 网页界面
 ![index](ttskit/templates/index.png "index")
 """
+from pathlib import Path
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(Path(__file__).stem)
+
 from flask import Flask, request, render_template, Response
 import argparse
 from gevent import pywsgi as wsgi
@@ -73,12 +79,11 @@ def start_sever():
         if request.method == 'GET':
             text = request.args.get('text')
             kwargs_str = request.args.get('kwargs')
-            kwargs = dict([w.strip().split('=') for w in kwargs_str.split('\n') if w.strip()])
-            speaker = kwargs.get('speaker', 'biaobei')
-            audio = kwargs.get('audio', 'tmp')
-            wav = sdk_api.tts_sdk(text=text, speaker=speaker, audio=audio)
+            kwargs = dict([[c.strip() for c in w.strip().split('=')] for w in kwargs_str.split('\n') if w.strip()])
+            wav = sdk_api.tts_sdk(text=text, **kwargs)
             return Response(wav, mimetype='audio/wav')
 
+    logger.info(f'Http server: http://{args.host}:{args.port}/ttskit'.replace('0.0.0.0', 'localhost'))
     server = wsgi.WSGIServer((args.host, args.port), app)
     server.serve_forever()
 

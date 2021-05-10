@@ -9,7 +9,7 @@
 def test_sdk_api():
     from ttskit import sdk_api
 
-    wav = sdk_api.tts_sdk('文本', audio='1')
+    wav = sdk_api.tts_sdk('文本', audio='24')
 
 
 def test_cli_api():

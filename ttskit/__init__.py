@@ -36,17 +36,22 @@ import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-import sdk_api
-import cli_api
-import web_api
-import http_server
-import encoder
-import mellotron
-import waveglow
-import resource
-from sdk_api import tts_sdk as tts
+try:
+    import sdk_api
+    import cli_api
+    import web_api
+    import http_server
+    import encoder
+    import mellotron
+    import waveglow
+    import resource
+    from sdk_api import tts_sdk as tts
+except ImportError:
+    import makefile
 
-__version__ = "0.1.4"
+    makefile.pip_install_requirements(os.path.join(os.path.dirname(os.path.abspath(__file__))), 'requirements.txt')
+
+__version__ = "0.1.5"
 
 version_doc = """
 ### 版本
@@ -55,6 +60,8 @@ v{}
 
 history_doc = """
 ### 历史版本
+#### v0.1.5
+- 稳定版。
 
 #### v0.1.0
 - 初始版。

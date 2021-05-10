@@ -12,11 +12,12 @@
     <div style="font-size:24px">文本</div>
     <form method="POST" name="form1">
         <textarea type="text" name="content" id="text" rows="10"
-                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll">请输入需要合成的文本</textarea>
+                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll">欢迎使用语音合成工具箱，请输入需要合成的文本。</textarea>
         <div style="padding:20px;"></div>
         <div style="font-size:24px">参数</div>
         <textarea type="text" name="title" id="kwargs" rows="10"
-                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll">audio=24</textarea>
+                  style="width:600px; height:100px;border: 1px solid #000; word-wrap:break-word;overflow: scroll; white-space: normal; ">audio=24&#10;speaker=biaobei&#10;vocoder=waveglow&#10;denoiser_strength=1.0&#10;
+        </textarea>
         <div style="padding:20px;"></div>
         <div>
             <input type="submit" value="合成" id="button" style="font-size:24px"/>

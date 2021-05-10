@@ -46,7 +46,7 @@ def tts_web():
     data = parse_request(request)
     text = data.get('text', '这是个样例')
     speaker = data.get('speaker', 'biaobei')
-    audio = data.get('audio', '0')
+    audio = data.get('audio', '24')
     wav = sdk_api.tts_sdk(text=text, speaker=speaker, audio=audio)
     return Response(wav, mimetype='audio/wav')
 

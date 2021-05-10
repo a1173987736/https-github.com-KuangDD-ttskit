@@ -31,7 +31,7 @@ output为输出，如果以.wav结尾，则为保存语音文件的路径；如�
 ```
 
 ### 版本
-v0.1.4
+v0.1.5
 
 ### sdk_api
 语音合成SDK接口。
@@ -41,7 +41,7 @@ v0.1.4
 ```python
 from ttskit import sdk_api
 
-wav = sdk_api.tts_sdk('文本', audio='1')
+wav = sdk_api.tts_sdk('文本', audio='24')
 ```
 
 ### cli_api
@@ -138,11 +138,10 @@ optional arguments:
 
 ### resource
 模型数据等资源。
-__init__.py
+
 audio
 model
 reference_audio
-reference_audio.tar
 
 ### encoder
 声音编码器。
@@ -154,6 +153,8 @@ reference_audio.tar
 声码器。
 
 ### 历史版本
+#### v0.1.5
+- 稳定版。
 
 #### v0.1.0
 - 初始版。

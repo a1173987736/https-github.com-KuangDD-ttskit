@@ -116,9 +116,6 @@ if __name__ == "__main__":
     else:
         pip_install_requirements()
 
-    os.system(
-        r'pip install torch==1.7.0+cpu torchvision==0.8.0 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html')
-    logger.info(f'pip install torch==1.7.0+cpu done.')
     # make_requirements()
     # make_gitignore()
     # make_readme()

@@ -78,8 +78,8 @@ def generate_wave(mel, **kwargs):
     """
     global _model
     global _denoiser
-    sigma = kwargs.get('sigma', 1.0)
-    denoiser_strength = kwargs.get('denoiser_strength', 1.0)
+    sigma = float(kwargs.get('sigma', 1.0))
+    denoiser_strength = float(kwargs.get('denoiser_strength', 1.0))
     if not is_loaded():
         load_waveglow_model(**kwargs)
     mel = torch.autograd.Variable(mel)
