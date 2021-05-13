@@ -134,7 +134,7 @@ def download_data(fpath):
     os.makedirs(os.path.dirname(fpath), exist_ok=True)
     with open(fpath, 'wb') as fout:
         for chunk in tqdm.tqdm(res.iter_content(chunk_size=1024),
-                               fname, mininterval=1, unit='KB', total=fsize // 1024):
+                               fname, unit='KB', total=fsize // 1024, ncols=100, mininterval=1):
             if chunk:
                 fout.write(chunk)
 

@@ -30,7 +30,7 @@ import re
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 install_requires = ['aukit>=1.4.4', 'inflect', 'cycler', 'librosa', 'matplotlib>=3.1.1,<=3.4.2', 'numba==0.48', 'numpy',
-                    'phkit>=0.2.7', 'pydub', 'PyYAML', 'scikit_learn', 'scipy', 'setproctitle', 'SIP', 'sounddevice',
+                    'phkit>=0.2.7', 'pydub', 'PyYAML', 'scikit_learn', 'scipy', 'setproctitle', 'SIP',
                     'tensorboardX', 'torch>=1.6.0,<=1.7.1', 'tqdm', 'umap_learn', 'Unidecode', 'visdom',
                     'webrtcvad_wheels', 'xmltodict', 'flask', 'gevent']
 requires = [re.sub(r'[<>=].+', '', w) for w in install_requires]
@@ -46,13 +46,6 @@ def create_readme():
     return "".join(docs)
 
 
-def pip_install():
-    from ttskit import makefile
-
-    makefile.pip_install_requirements(os.path.join('ttskit', 'requirements.txt'))
-
-
-pip_install()
 ttskit_doc = create_readme()
 from ttskit import __version__ as ttskit_version
 
@@ -66,7 +59,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/KuangDD/ttskit",
     packages=find_packages(exclude=['contrib', 'docs', 'test*']),
-    # install_requires=install_requires,  # 指定项目最低限度需要运行的依赖项
+    install_requires=install_requires,  # 指定项目最低限度需要运行的依赖项
     requires=requires,
     python_requires='>=3.6',  # python的依赖关系
     package_data={

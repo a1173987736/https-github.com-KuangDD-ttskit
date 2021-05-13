@@ -31,7 +31,7 @@ output为输出，如果以.wav结尾，则为保存语音文件的路径；如�
 ```
 
 ### 版本
-v0.1.5
+v0.1.6
 
 ### sdk_api
 语音合成SDK接口。
@@ -143,6 +143,19 @@ audio
 model
 reference_audio
 
++ 内置发音人映射表
+
+```python
+_speaker_dict = {
+    1: 'Aibao', 2: 'Aicheng', 3: 'Aida', 4: 'Aijia', 5: 'Aijing',
+    6: 'Aimei', 7: 'Aina', 8: 'Aiqi', 9: 'Aitong', 10: 'Aiwei',
+    11: 'Aixia', 12: 'Aiya', 13: 'Aiyu', 14: 'Aiyue', 15: 'Siyue',
+    16: 'Xiaobei', 17: 'Xiaogang', 18: 'Xiaomei', 19: 'Xiaomeng', 20: 'Xiaowei',
+    21: 'Xiaoxue', 22: 'Xiaoyun', 23: 'Yina', 24: 'biaobei', 25: 'cctvfa',
+    26: 'cctvfb', 27: 'cctvma', 28: 'cctvmb', 29: 'cctvmc', 30: 'cctvmd'
+}
+```
+
 ### encoder
 声音编码器。
 
@@ -151,10 +164,3 @@ reference_audio
 
 ### waveglow
 声码器。
-
-### 历史版本
-#### v0.1.5
-- 稳定版。
-
-#### v0.1.0
-- 初始版。
