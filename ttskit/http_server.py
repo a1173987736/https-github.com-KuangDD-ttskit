@@ -43,6 +43,7 @@ from flask import Flask, request, render_template, Response
 import argparse
 from gevent import pywsgi as wsgi
 import os
+import yaml
 
 import sdk_api
 
@@ -72,14 +73,16 @@ def start_sever():
             content = request.form.get('content')
             title = request.form.get('title')
             return render_template("index.html")
-        return render_template("index.html")
+        content = '欢迎使用语音合成工具箱，请输入需要合成的文本。'
+        title = 'format: yaml\naudio: 24\nspeaker: biaobei\nvocoder: waveglow\nsigma: 1.0\ndenoiser_strength: 1.2\ngriffinlim_iters: 30\n'
+        return render_template("index.html", content=content, title=title)
 
     @app.route('/synthesize', methods=['GET', 'POST'])
     def synthesize():
         if request.method == 'GET':
             text = request.args.get('text')
             kwargs_str = request.args.get('kwargs')
-            kwargs = dict([[c.strip() for c in w.strip().split('=')] for w in kwargs_str.split('\n') if w.strip()])
+            kwargs = yaml.load(kwargs_str)
             wav = sdk_api.tts_sdk(text=text, **kwargs)
             return Response(wav, mimetype='audio/wav')
 

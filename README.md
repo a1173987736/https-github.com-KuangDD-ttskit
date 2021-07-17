@@ -15,6 +15,15 @@ pip install -U ttskit
     * ttskit的默认音频采样率为22.5k。
     * 自行设置环境变量CUDA_VISIBLE_DEVICES以调用GPU，如果不设置，则默认调用0号GPU，没有GPU则使用CPU。
 
+### 资源
+使用ttskit的过程中会自动下载模型和语音资源。
+
+如果下载太慢或无法下载，也可自行从百度网盘下载，把下载的资源合并到ttskit目录下（更新resource目录）。
+
+链接：https://pan.baidu.com/s/13RPGNEKrCX3fgiGl7P5bpw
+
+提取码：b7hw
+
 ### 快速使用
 ```
 import ttskit
@@ -31,7 +40,7 @@ output为输出，如果以.wav结尾，则为保存语音文件的路径；如�
 ```
 
 ### 版本
-v0.1.6
+v0.1.7
 
 ### sdk_api
 语音合成SDK接口。

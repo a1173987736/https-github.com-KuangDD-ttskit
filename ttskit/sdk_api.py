@@ -65,6 +65,13 @@ _split_juzi_re = re.compile(r'(.+?[。！!？?；;：—，,、“”"‘’\'�
 _split_fenju_re = re.compile(r'(.+?[\W]+)')
 _zi_judge_re = re.compile(r'\w')
 
+_resource_size_dict = {'ge2e.kuangdd.pt': 17090379,
+                       'mellotron.kuangdd-rtvc.pt': 115051382,
+                       'mellotron_hparams.json': 2370,
+                       'waveglow.kuangdd.pt': 351145525,
+                       'audio.tar': 1910784,
+                       'reference_audio.tar': 70660608}
+
 
 def load_audio(audio_dir_list=(os.path.splitext(_audio_tar_path)[0], os.path.splitext(_reference_audio_tar_path)[0]),
                **kwargs):
@@ -92,8 +99,12 @@ def download_resource():
         download_data(fpath)
 
 
-def download_data(fpath):
+def download_data(fpath, force=False):
     """下载数据。"""
+    if (not force
+            and os.path.isfile(fpath)
+            and os.path.getsize(fpath) == _resource_size_dict.get(os.path.basename(fpath), 0)):
+        return True
     url_prefix = 'http://www.kddbot.com:11000/data/'
     url_info_prefix = 'http://www.kddbot.com:11000/data_info/'
 
@@ -109,6 +120,11 @@ def download_data(fpath):
         logger.info(f'Download <{fname}> failed!!!')
         logger.info(f'Download url: {url}')
         logger.info(f'Download failed! Please check!')
+        info = ('下载失败！可以自行从百度网盘下载，把下载的资源合并到ttskit目录下（更新resource目录）。\n'
+                '链接：https://pan.baidu.com/s/13RPGNEKrCX3fgiGl7P5bpw\n'
+                '提取码：b7hw\n')
+        logger.info(f'You can download from baidudisk!')
+        logger.info(info)
         return
 
     if res.status_code == 200:
@@ -276,9 +292,13 @@ def tts_sdk_base(text, speaker='biaobei', audio='24', output='', **kwargs):
     mels_postnet = mels_postnet[:, :, :end_idx]
     vocoder_name = kwargs.get('vocoder', 'waveglow')
     if vocoder_name == 'waveglow':
-        wavs = waveglow.generate_wave(mel=mels_postnet, **kwargs)
+        wavs = waveglow.generate_wave(mel=mels_postnet,
+                                      denoiser_strength=kwargs.get('denoiser_strength', 1.2),
+                                      sigma=kwargs.get('sigma', 1.0))
     else:
-        wavs = _stft.griffin_lim(mels_postnet, n_iters=10)
+        wavs = _stft.griffin_lim_denoiser(mels_postnet,
+                                          n_iters=kwargs.get('griffinlim_iters', 30),
+                                          denoiser_strength=0.01 * kwargs.get('denoiser_strength', 1.2))
 
     wav_output = wavs.squeeze(0).cpu().numpy()
 

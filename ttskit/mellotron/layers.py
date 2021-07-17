@@ -114,9 +114,9 @@ class TacotronSTFT(torch.nn.Module):
         return wav_outputs
 
     def griffin_lim_denoiser(self, x, n_iters=5, denoiser_mode='zeros', denoiser_strength=0):
-        wav_outputs = self.griffin_lim_(x, n_iters=n_iters)
+        wav_outputs = self.griffin_lim(x, n_iters=n_iters)
         if self.denoiser_mode != denoiser_mode or self.denoiser is None:
-            voc = lambda x: self.griffin_lim_(x, n_iters=n_iters)
+            voc = lambda x: self.griffin_lim(x, n_iters=n_iters)
             self.create_denoiser(vocoder=voc, mode=denoiser_mode)
         wav_outputs = self.denoiser(wav_outputs, denoiser_strength)
         wav_outputs = wav_outputs.squeeze(1)
